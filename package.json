@@ -1,0 +1,31 @@
+{
+  "name": "mern-starter-template",
+  "version": "1.0.0",
+  "description": "MERN Stack Starter Template",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "client": "npm run dev --prefix client",
+    "server": "nodemon server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astra-media/mern-starter-template.git"
+  },
+  "author": "M. Sakeeb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/astra-media/mern-starter-template/issues"
+  },
+  "homepage": "https://github.com/astra-media/mern-starter-template#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.5.0",
+    "nodemon": "^3.1.10"
+  }
+}
