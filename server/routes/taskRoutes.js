@@ -13,11 +13,33 @@ router.post('/', async (req, res) => {
   }
 })
 
-//Read all Task
+//Read All Task
 router.get('/', async (req, res) => {
   try {
     const tasks = await Task.find()
     res.json(tasks)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+//Update Task
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+    res.json(updated)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+//Delete Task
+router.delete('/:id', async (req, res) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id)
+    res.json({ message: 'Task Deleted' })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
