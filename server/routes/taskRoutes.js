@@ -1,10 +1,13 @@
 import express from 'express'
 import Task from '../models/Task.js'
+import { verifyToken } from '../middleware/auth.js'
 
 const router = express.Router()
 
-//Create Task
-router.post('/', async (req, res) => {
+//@desc Create Task
+//@route /api/tasks
+//@access  Private
+router.post('/', verifyToken, async (req, res) => {
   try {
     const task = await Task.create(req.body)
     res.status(201).json(task)
