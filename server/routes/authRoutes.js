@@ -7,7 +7,7 @@ const router = express.Router()
 //Dummy user DB
 const users = [
   {
-    id: 1,
+    _id: 1,
     email: 'test@example.com',
     password: await bcrypt.hash('123456', 10),
   },
@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
   const token = jwt.sign(
     { id: user.id, email: user.email },
     process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: 120 }
   )
 
   res.cookie('token', token, {
@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
     secure: false,
     sameSite: 'strict',
   })
-  res.json({ message: 'Logged in' })
+  res.json({ _id: user._id, email: user.email })
 })
 
 //@desc Logout Route
