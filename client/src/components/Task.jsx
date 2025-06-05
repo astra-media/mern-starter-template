@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Alert } from 'react-bootstrap'
 
 const Task = () => {
   const [task, setTask] = useState([])
   const [title, setTitle] = useState('')
+  const [alert, setAlert] = useState('')
 
   const fetchTask = async () => {
     const res = await axios.get('/api/tasks')
@@ -19,13 +20,12 @@ const Task = () => {
     e.preventDefault()
     try {
       if (!title) return
-      const { data } = await axios.post('/api/tasks', { title })
+      await axios.post('/api/tasks', { title })
       setTitle('')
       fetchTask()
     } catch (err) {
-      console.log(err.response?.data?.message || 'Error')
-      localStorage.setItem('userInfo', '')
-      window.location.reload()
+      const error = err.response?.data?.message || 'Error'
+      setAlert(error)
     }
   }
 
@@ -43,6 +43,13 @@ const Task = () => {
       <Row className='justify-content-md-center'>
         <Col xs={12} md={6}>
           <h1 className='mb-4'>MERN Task App</h1>
+          {alert && (
+            <Alert variant='danger'>
+              {alert}.
+              <br />
+              Please log out and sign in again
+            </Alert>
+          )}
           <Form className='mb-4' onSubmit={handleAdd}>
             <Form.Group className='mb-4'>
               <Form.Control
