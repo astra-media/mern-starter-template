@@ -1,79 +1,52 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 
 const App = () => {
-  const [task, setTask] = useState([])
-  const [title, setTitle] = useState('')
+  const [city, setCity] = useState('')
+  const [weather, setWeather] = useState('')
 
-  const fetchTask = async () => {
-    const res = await axios.get('/api/tasks')
-    setTask(res.data)
-  }
-
-  useEffect(() => {
-    fetchTask()
-  }, [])
-
-  const handleAdd = async (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault()
-    if (!title) return
-    await axios.post('/api/tasks', { title })
-    setTitle('')
-    fetchTask()
-  }
-
-  const handleComplete = async (x) => {
-    await axios.put(`/api/tasks/${x._id}`, { completed: !x.completed })
-    fetchTask()
-  }
-
-  const handleDelete = async (x) => {
-    await axios.delete(`/api/tasks/${x}`)
-    fetchTask()
+    try {
+      const res = await axios.get(`/api/weather/${city}`)
+      setWeather(res.data)
+      setCity('')
+    } catch (err) {
+      console.error(err)
+      alert('Failed to fetch weather')
+    }
   }
 
   return (
     <Container>
-      <h1 className='mb-4'>MERN Task App</h1>
-      <Form className='mb-4' onSubmit={handleAdd}>
-        <Form.Group className='mb-4'>
-          <Form.Control
-            className='mb-2'
-            value={title}
-            placeholder='New Task'
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Button variant='primary' type='submit'>
-            Add Task
-          </Button>
-        </Form.Group>
-      </Form>
-
-      <ul>
-        {task.map((x) => (
-          <li key={x._id}>
-            <Form.Group className='d-flex flex-row mb-2'>
-              <Form.Label>{x.title}</Form.Label>
-              <Form.Check
-                type='checkbox'
-                label='Completed?'
-                checked={x.completed}
-                onChange={() => handleComplete(x)}
-                className='mx-4'
+      <Row className='justify-content-md-center'>
+        <Col xs={12} md={6}>
+          <h1 className='mb-4'>Weather Search</h1>
+          <Form className='mb-4' onSubmit={handleSearch}>
+            <Form.Group className='mb-4'>
+              <Form.Control
+                className='mb-2'
+                value={city}
+                placeholder='Enter city name'
+                required
+                onChange={(e) => setCity(e.target.value)}
               />
-              <Button
-                className='text-bg-danger'
-                onClick={() => handleDelete(x._id)}
-              >
-                Delete
+              <Button variant='primary' type='submit'>
+                Search
               </Button>
             </Form.Group>
-            <hr />
-          </li>
-        ))}
-      </ul>
+          </Form>
+          {weather && (
+            <div className='mt-4 border p-2'>
+              <h2 className='font-semibold'>{weather.name}</h2>
+              <p>{weather.weather[0].description}</p>
+              <p>{`${weather.main.temp} °F`}</p>
+            </div>
+          )}
+        </Col>
+      </Row>
     </Container>
   )
 }
