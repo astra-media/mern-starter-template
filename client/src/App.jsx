@@ -6,13 +6,22 @@ import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 const App = () => {
   const [city, setCity] = useState('')
   const [weather, setWeather] = useState('')
+  const [weatherCache, setWeatherCache] = useState({})
 
   const handleSearch = async (e) => {
     e.preventDefault()
+    if(weatherCache[city]){   //Example of Frontend cache, when not using backend cache
+      setWeather(weatherCache[city])
+      setCity('')
+      console.log('Using cached data')
+      return
+    }
     try {
       const res = await axios.get(`/api/weather/${city}`)
+      setWeatherCache(x => ({...x, [city]: res.data}))  //Example of Frontend cache, when not using backend cache
       setWeather(res.data)
       setCity('')
+      console.log('Weather Chached')
     } catch (err) {
       console.error(err)
       alert('Failed to fetch weather')
