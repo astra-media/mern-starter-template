@@ -9,11 +9,10 @@ app.use(express.json()) //middleware to parses JSON payloads based on body-parse
 app.use(cors()) // allow requests from any origin
 app.use(morgan('dev')) //HTTP request logger middleware
 
-
 //Routes
-import weatherRoutes from './routes/weather.js'
-app.use('/api/weather', weatherRoutes)
-
+app.get('/api', (req, res) => {
+  res.send('API is running...')
+})
 
 const port = process.env.PORT || 8000
 app.listen(port, () => console.log(`Server running on port ${port}`))
