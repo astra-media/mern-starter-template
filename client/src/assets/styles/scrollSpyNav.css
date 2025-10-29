@@ -1,0 +1,79 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
+/* Fixed top navbar */
+.fixed-menu {
+  position: fixed;
+  top: 50px;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #ddd;
+  /* z-index: 1000; */
+
+  /* Scrollable horizontally */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+
+  /* 🧲 Scroll snapping */
+  scroll-snap-type: x mandatory;
+}
+
+.fixed-menu::-webkit-scrollbar {
+  display: none; /* hide scrollbar on Chrome/Safari */
+}
+
+/* Optional: subtle fade edges to show scrollability */
+.fixed-menu {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Menu links */
+.fixed-menu a {
+  position: relative;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: color 0.3s ease;
+
+  /* 🧲 Each link is a snap point */
+  scroll-snap-align: center;
+}
+
+.fixed-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: #007bff;
+  transition: width 0.3s ease;
+}
+
+.fixed-menu a.active {
+  color: #007bff;
+}
+
+.fixed-menu a.active::after {
+  width: 100%;
+}
+
+/* Example sections */
+main section {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  border-bottom: 1px solid #eee;
+}
